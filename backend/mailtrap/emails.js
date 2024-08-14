@@ -5,6 +5,8 @@ export const sendVerificationEmail = async (email, verificationToken) => {
 
     const recipient = [{email}];
 
+    console.log("Recipient", recipient);
+
     try {
         const response = await client.send({
             from : sender,
