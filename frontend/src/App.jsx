@@ -4,7 +4,6 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
 import EmailVerificationPage from './pages/EmailVerificationPage'
-import { Toaster } from 'react-hot-toast'
 import { useAuthStore } from '../store/authStore'
 import Home from './pages/Home'
 import LoadingSpinner from './components/LoadingSpinner'
@@ -107,8 +106,6 @@ const App = () => {
           </Route>
           
       </Routes>
-
-      <Toaster />
 
     </div>
   )
