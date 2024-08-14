@@ -4,6 +4,8 @@ export const verifyToken = (req, res, next) => {
 
     const token = req.cookies.token;
 
+    console.log("Cookies", req.cookies);
+
     console.log("Token", token);
 
     if (!token) {
