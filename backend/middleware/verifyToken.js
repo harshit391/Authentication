@@ -2,9 +2,7 @@ import jwt from 'jsonwebtoken';
 
 export const verifyToken = (req, res, next) => {
 
-    console.log("Token Explicit :- ", req.headers);
-
-    const token = req.headers.cookies;
+    const token = req.headers.token || req.cookies.token;
 
     console.log("Cookies", req.cookies);
 
