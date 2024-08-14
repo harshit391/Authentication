@@ -2,7 +2,7 @@ import {create} from "zustand";
 import Cookies from "js-cookie";
 import axios from "axios";
 
-const API_URL = "https://authentication-iol7.onrender.com/api/auth";
+const API_URL = "http://localhost:5000/api/auth";
 
 export const useAuthStore = create((set) => ({
 
@@ -84,7 +84,7 @@ export const useAuthStore = create((set) => ({
         set({isCheckingAuth: true});
 
         try {
-            const response = await axios.get(`${API_URL}/check-auth`, {withCredentials: true});
+            const response = await axios.get(`${API_URL}/check-auth`, {withCredentials: true, token: Cookies.get("token")});
             set({user: response.data.user, isAuthenticated: true, isCheckingAuth: false});
         } catch (error) {
             console.log(error.response.data);
