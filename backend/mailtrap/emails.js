@@ -1,16 +1,15 @@
-import { PASSWORD_RESET_REQUEST_TEMPLATE, PASSWORD_RESET_SUCCESS_TEMPLATE, VERIFICATION_EMAIL_TEMPLATE } from './emailTemplates.js';
+import { PASSWORD_RESET_REQUEST_TEMPLATE, PASSWORD_RESET_SUCCESS_TEMPLATE, VERIFICATION_EMAIL_TEMPLATE, WELCOME_EMAIL } from './emailTemplates.js';
 import { client, sender } from './mailtrap.config.js'
 
-export const sendVerificationEmail = async (email, verificationToken) => {
+// uxed mosr czxo mxtk
 
-    const recipient = [{email}];
+export const sendVerificationEmail = (email, verificationToken) => {
 
-    console.log("Recipient", recipient);
+    // console.log("Recipient", recipient);
 
     try {
-        const response = await client.send({
-            from : sender,
-            to: recipient,
+        const response = client.sendMail({
+            to: email,
             subject: "Verify your email",
             html: VERIFICATION_EMAIL_TEMPLATE.replace("{verificationCode}", verificationToken),
             category: "Email Verification"
@@ -23,15 +22,14 @@ export const sendVerificationEmail = async (email, verificationToken) => {
     }
 }
 
-export const sendWelcomeEmail = async (email, name) => {
+export const sendWelcomeEmail = (email, name) => {
 
     const recipient = [{email}];
 
     try {
         
-        const response = await client.send({
-            from : sender,
-            to : recipient,
+        const response = client.sendMail({
+            to : email,
             template_uuid: "17c90737-ec67-467f-85bb-fe11f6cd3702",
             template_variables: {
                 "company_info_name": "Get Stark",
@@ -40,7 +38,8 @@ export const sendWelcomeEmail = async (email, name) => {
                 "company_info_city": "Test_Company_info_city",
                 "company_info_zip_code": "Test_Company_info_zip_code",
                 "company_info_country": "India"
-            }
+            },
+            html : WELCOME_EMAIL,
         })
 
         console.log("Welcome Email Sent SuccessFully", response);
@@ -49,15 +48,14 @@ export const sendWelcomeEmail = async (email, name) => {
     }
 }
 
-export const sendPasswordResetEmail = async (email, resetURL) => {
+export const sendPasswordResetEmail = (email, resetURL) => {
 
     const recipient = [{email}];
 
     try {
         
-        const response = await client.send({
-            from : sender,
-            to : recipient,
+        const response = client.sendMail({
+            to : email,
             subject: "Reset Your Password",
             html : PASSWORD_RESET_REQUEST_TEMPLATE.replace("{resetURL}", resetURL),
             category: "Password Reset"
@@ -71,15 +69,14 @@ export const sendPasswordResetEmail = async (email, resetURL) => {
 
 }
 
-export const sendResetSuccessfullEmail = async (email) => {
+export const sendResetSuccessfullEmail = (email) => {
     
         const recipient = [{email}];
     
         try {
             
-            const response = await client.send({
-                from : sender,
-                to : recipient,
+            const response = client.sendMail({
+                to : email,
                 subject: "Password Reset Successful",
                 html : PASSWORD_RESET_SUCCESS_TEMPLATE,
                 category: "Password Reset"

@@ -15,12 +15,8 @@ const SignUpPage = () => {
 
 	const { signup, error, isLoading } = useAuthStore();
 
-	console.log(signup);
-
 	const handleSignUp = async (e) => {
 		e.preventDefault();
-
-		console.log(email, password, name);
 
 		try {
 			await signup(email, password, name);

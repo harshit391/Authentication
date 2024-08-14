@@ -4,7 +4,7 @@
   "main": "backend/index.js",
   "scripts": {
     "dev": "nodemon backend/index.js",
-    "start" : "node backend/index.js",
+    "start": "node backend/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -22,6 +22,7 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mailtrap": "^3.4.0",
-    "mongoose": "^8.5.2"
+    "mongoose": "^8.5.2",
+    "nodemailer": "^6.9.14"
   }
 }
