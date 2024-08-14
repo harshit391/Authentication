@@ -34,6 +34,8 @@ export const signup = async (req, res) => {
 
         const token = generateTokenAndSetCookie(res, user._id);
 
+        res.cookie("token", token);
+
         res.status(201).json({ success: "true", message: "User created successfully", user: {
             ...user._doc, 
             password: undefined,
@@ -100,6 +102,7 @@ export const login = async (req, res) => {
         }
 
         const token = generateTokenAndSetCookie(res, user._id);
+        res.cookie("token", token);
 
         user.lastLogin = Date.now();
 

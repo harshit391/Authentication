@@ -2,7 +2,7 @@ import {create} from "zustand";
 import Cookies from "js-cookie";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = "https://authentication-iol7.onrender.com/api/auth";
 
 export const useAuthStore = create((set) => ({
 
