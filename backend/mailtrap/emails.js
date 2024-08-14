@@ -30,6 +30,7 @@ export const sendWelcomeEmail = (email, name) => {
         
         const response = client.sendMail({
             to : email,
+            subject: "Logged in Success",
             template_uuid: "17c90737-ec67-467f-85bb-fe11f6cd3702",
             template_variables: {
                 "company_info_name": "Get Stark",
@@ -40,6 +41,7 @@ export const sendWelcomeEmail = (email, name) => {
                 "company_info_country": "India"
             },
             html : WELCOME_EMAIL,
+            category: "Welcome Email"
         })
 
         console.log("Welcome Email Sent SuccessFully", response);
