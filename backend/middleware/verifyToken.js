@@ -4,7 +4,7 @@ export const verifyToken = (req, res, next) => {
 
     console.log("Token Explicit :- ", req.headers);
 
-    const token = req.cookies.token;
+    const token = req.headers.cookies;
 
     console.log("Cookies", req.cookies);
 
