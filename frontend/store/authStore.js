@@ -3,7 +3,6 @@ import Cookies from "js-cookie";
 import axios from "axios";
 
 const API_URL = `${import.meta.env.VITE_DB_API}/api/auth`;
-console.log("API URL", import.meta.env);
 
 export const useAuthStore = create((set) => ({
 
