@@ -2,7 +2,7 @@ import {create} from "zustand";
 import Cookies from "js-cookie";
 import axios from "axios";
 
-const API_URL = "https://authentication-iol7.onrender.com/api/auth";
+const API_URL = `${process.env.MAIN_API}/api/auth`;
 
 export const useAuthStore = create((set) => ({
 
@@ -121,7 +121,5 @@ export const useAuthStore = create((set) => ({
             throw error;
         }
     }
-
-
 }))
 

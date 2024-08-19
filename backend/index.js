@@ -10,10 +10,9 @@ dotenv.config();
 const app = express();
 const PORT = 5000;
 
-app.use(cors({origin: "https://authentication-pied-six.vercel.app", credentials: true}));
-// app.use(cors({origin: "http://localhost:5173", credentials: true}));
+app.use(cors({origin: process.env.MAIN_API, credentials: true}));
 app.use(cookieParser());
-app.use(express.json()); // Allows us to parse incoming requests :req.body
+app.use(express.json());
 app.use((req, res, next) => {
     console.log('Raw Cookie Header:', req.headers.cookie);
     next();

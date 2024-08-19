@@ -46,7 +46,6 @@ const EmailVerificationPage = () => {
 		e.preventDefault();
 
 		const verificationCode = code.join("");
-		console.log(verificationCode);
 
 		try {
 			await verifyEmail(verificationCode);

@@ -1,11 +1,7 @@
 import { PASSWORD_RESET_REQUEST_TEMPLATE, PASSWORD_RESET_SUCCESS_TEMPLATE, VERIFICATION_EMAIL_TEMPLATE, WELCOME_EMAIL } from './emailTemplates.js';
-import { client, sender } from './mailtrap.config.js'
-
-// uxed mosr czxo mxtk
+import { client } from './mailtrap.config.js'
 
 export const sendVerificationEmail = (email, verificationToken) => {
-
-    // console.log("Recipient", recipient);
 
     try {
         const response = client.sendMail({

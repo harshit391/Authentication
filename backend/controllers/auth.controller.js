@@ -69,7 +69,7 @@ export const verifyEmail = async (req, res) => {
 
         await user.save();
 
-        await sendWelcomeEmail(user.email, user.name);
+        sendWelcomeEmail(user.email, user.name);
 
         return res.status(200).json({ success: "true", message: "Email verified successfully", user: {
             ...user._doc,
@@ -145,7 +145,7 @@ export const forgotPassword = async (req, res) => {
         await user.save();
 
         // send email
-        await sendPasswordResetEmail(user.email, `${process.env.CLIENT_URL}/reset-password/${resetPasswordToken}`);
+        sendPasswordResetEmail(user.email, `${process.env.CLIENT_URL}/reset-password/${resetPasswordToken}`);
 
         return res.status(200).json({ success: "true", message: "Password reset link sent successfully" });
     } catch (error) {

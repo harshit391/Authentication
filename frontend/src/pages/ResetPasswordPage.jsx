@@ -12,8 +12,6 @@ const ResetPasswordPage = () => {
     const { resetPassword, isLoading, error} = useAuthStore();
 
     const {token} = useParams();
-    console.log("token", token);
-    console.log(isLoading);
 
     const navigate = useNavigate();
 
