@@ -8,8 +8,8 @@ export const client = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
   port: process.env.MAIL_PORT,
   auth: {
-    user: CLIENT_USER,
-    pass: CLIENT_PASS,
+    user: process.env.CLIENT_USER,
+    pass: process.env.CLIENT_PASS,
   }
 })
 
