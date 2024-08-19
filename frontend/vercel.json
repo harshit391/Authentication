@@ -1,8 +1,16 @@
 {
-    "rewrites" : [
-        {
-            "source" : "/(.*)",
-            "destination" : "/index.html"
-        }
+    "builds": [
+      {
+        "src": "Frontend/package.json",
+        "use": "@vercel/static-build",
+        "config": { "distDir": "Frontend/dist" }
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/(.*)",
+        "destination": "/index.html"
+      }
     ]
-}
+  }
+  
