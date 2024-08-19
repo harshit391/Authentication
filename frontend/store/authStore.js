@@ -2,7 +2,7 @@ import {create} from "zustand";
 import Cookies from "js-cookie";
 import axios from "axios";
 
-const API_URL = `${import.meta.env.MAIN_API}/api/auth`;
+const API_URL = `${import.meta.env.DB_API}/api/auth`;
 
 export const useAuthStore = create((set) => ({
 
