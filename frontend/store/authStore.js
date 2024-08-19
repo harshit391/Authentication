@@ -2,7 +2,7 @@ import {create} from "zustand";
 import Cookies from "js-cookie";
 import axios from "axios";
 
-const API_URL = `${process.env.MAIN_API}/api/auth`;
+const API_URL = `${import.meta.env.MAIN_API}/api/auth`;
 
 export const useAuthStore = create((set) => ({
 
@@ -11,6 +11,7 @@ export const useAuthStore = create((set) => ({
     error: null,
     isLoading: false,
     isCheckingAuth: true,
+    isVerified: false,
 
     signup: async (email, password, name) => {
         set({isLoading: true, error: null});
@@ -21,7 +22,7 @@ export const useAuthStore = create((set) => ({
 
             Cookies.set("token", response.data.user.token);
 
-            set({user: response.data.user, isAuthenticated: true, isLoading: false});
+            set({user: response.data.user, isAuthenticated: true, isLoading: false, isVerified: response.data.user.isVerified});
 
         } catch (error) {
             
@@ -41,6 +42,7 @@ export const useAuthStore = create((set) => ({
                 user: response.data.user,
                 error: null,
                 isLoading: false,
+                isVerified: response.data.user.isVerified,
             })
 
             Cookies.set("token", response.data.user.token);
@@ -72,7 +74,7 @@ export const useAuthStore = create((set) => ({
         try {
             const response = await axios.post(`${API_URL}/verify-email`, {code});
 
-            set({user: response.data.user, isAuthenticated: true, isLoading: false});
+            set({user: response.data.user, isAuthenticated: true, isLoading: false,isVerified: response.data.user.isVerified});
         } catch (error) {
             set({error: error.response.data.message || "Error verifying email", isLoading: false});
             throw error;
@@ -87,7 +89,7 @@ export const useAuthStore = create((set) => ({
             const response = await axios.get(`${API_URL}/check-auth`, {withCredentials: true, headers: {
                 token: Cookies.get("token")
             }});
-            set({user: response.data.user, isAuthenticated: true, isCheckingAuth: false});
+            set({user: response.data.user, isAuthenticated: true, isCheckingAuth: false, isVerified: response.data.user.isVerified});
         } catch (error) {
             console.log(error.response.data);
             set({isCheckingAuth: false, error: null, isAuthenticated: false});
