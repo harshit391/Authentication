@@ -4,14 +4,47 @@ import crypto from "crypto";
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
 import { sendPasswordResetEmail, sendVerificationEmail, sendWelcomeEmail, sendResetSuccessfullEmail } from "../mailtrap/emails.js";
 
+// --- Input Validation Helpers ---
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const validateEmail = (email) => {
+    if (!email || typeof email !== "string") return "Email is required";
+    if (email.length > 254) return "Email is too long";
+    if (!EMAIL_REGEX.test(email.trim())) return "Invalid email format";
+    return null;
+};
+
+const validatePassword = (password) => {
+    if (!password || typeof password !== "string") return "Password is required";
+    if (password.length < 8) return "Password must be at least 8 characters";
+    if (password.length > 128) return "Password is too long";
+    if (!/[A-Z]/.test(password)) return "Password must contain at least one uppercase letter";
+    if (!/[a-z]/.test(password)) return "Password must contain at least one lowercase letter";
+    if (!/[0-9]/.test(password)) return "Password must contain at least one number";
+    return null;
+};
+
+const validateName = (name) => {
+    if (!name || typeof name !== "string") return "Name is required";
+    const trimmed = name.trim();
+    if (trimmed.length === 0) return "Name is required";
+    if (trimmed.length > 100) return "Name is too long";
+    return null;
+};
+
 export const signup = async (req, res) => {
 
     const { email, password, name } = req.body;
     try {
-       
-        if (!email || !password || !name) {
-            throw new Error("Please fill all the fields");
-        }
+        const emailError = validateEmail(email);
+        if (emailError) return res.status(400).json({ success: "false", message: emailError });
+
+        const passwordError = validatePassword(password);
+        if (passwordError) return res.status(400).json({ success: "false", message: passwordError });
+
+        const nameError = validateName(name);
+        if (nameError) return res.status(400).json({ success: "false", message: nameError });
 
         const userAlreadyExists = await User.findOne({ email });
         if (userAlreadyExists) {
@@ -20,12 +53,12 @@ export const signup = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
+        const verificationToken = crypto.randomInt(100000, 1000000).toString();
 
         const user = new User({
             email, password: hashedPassword, name,
             verificationToken, 
-            verifitcationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
+            verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
         })
 
         sendVerificationEmail(user.email, verificationToken);
@@ -33,8 +66,6 @@ export const signup = async (req, res) => {
         await user.save();
 
         const token = generateTokenAndSetCookie(res, user._id);
-
-        res.cookie("token", token);
 
         res.status(201).json({ success: "true", message: "User created successfully", user: {
             ...user._doc, 
@@ -53,10 +84,13 @@ export const verifyEmail = async (req, res) => {
     const { code } = req.body;
 
     try {
-        const user = await User.findOne({
+        if (!code || typeof code !== "string" || !/^\d{6}$/.test(code)) {
+            return res.status(400).json({ success: "false", message: "Invalid verification code format" });
+        }
 
+        const user = await User.findOne({
             verificationToken: code,
-            verifitcationTokenExpiresAt: { $gt: Date.now() }
+            verificationTokenExpiresAt: { $gt: Date.now() }
         });
 
         if (!user) {
@@ -65,7 +99,7 @@ export const verifyEmail = async (req, res) => {
 
         user.isVerified = true;
         user.verificationToken = undefined;
-        user.verifitcationTokenExpiresAt = undefined;
+        user.verificationTokenExpiresAt = undefined;
 
         await user.save();
 
@@ -88,7 +122,13 @@ export const login = async (req, res) => {
     const {email, password} = req.body;
 
     try {
-        
+        const emailError = validateEmail(email);
+        if (emailError) return res.status(400).json({ success: "false", message: emailError });
+
+        if (!password || typeof password !== "string") {
+            return res.status(400).json({ success: "false", message: "Password is required" });
+        }
+
         const user = await User.findOne({ email });
 
         if (!user) {
@@ -102,7 +142,6 @@ export const login = async (req, res) => {
         }
 
         const token = generateTokenAndSetCookie(res, user._id);
-        res.cookie("token", token);
 
         user.lastLogin = Date.now();
 
@@ -121,7 +160,12 @@ export const login = async (req, res) => {
 }
 
 export const logout = async (req, res) => {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+        path: "/",
+    });
     res.status(200).json({ success: "true", message: "Logged out successfully" });
 }
 
@@ -130,6 +174,9 @@ export const forgotPassword = async (req, res) => {
     const { email } = req.body;
 
     try {
+        const emailError = validateEmail(email);
+        if (emailError) return res.status(400).json({ success: "false", message: emailError });
+
         const user = await User.findOne({email});
 
         if (!user) {
@@ -164,7 +211,8 @@ export const resetPassword = async (req, res) => {
 
         const { password } = req.body;
 
-        console.log("Password", password);
+        const passwordError = validatePassword(password);
+        if (passwordError) return res.status(400).json({ success: "false", message: passwordError });
 
         const user = await User.findOne({
             resetPasswordToken: token,
