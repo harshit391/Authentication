@@ -22,8 +22,8 @@
     "express": "^4.19.2",
     "express-rate-limit": "^8.3.2",
     "jsonwebtoken": "^9.0.2",
-    "mailtrap": "^3.4.0",
+    "mailtrap": "^4.5.1",
     "mongoose": "^8.5.2",
-    "nodemailer": "^6.9.14"
+    "nodemailer": "^8.0.4"
   }
 }
