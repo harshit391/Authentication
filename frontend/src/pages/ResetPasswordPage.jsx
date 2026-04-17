@@ -19,7 +19,6 @@ const ResetPasswordPage = () => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
-            console.log('Passwords do not match');
             alert('Passwords do not match');
             return;
         }
@@ -49,7 +48,7 @@ const ResetPasswordPage = () => {
             </h2>
             {error && <p className='text-red-500 text-sm mb-4'>{error}</p>}
 
-            <form onSubmit={handleSubmit}></form>
+            <form onSubmit={handleSubmit}>
                     <Input
 						icon={Lock}
 						type='password'
@@ -74,10 +73,10 @@ const ResetPasswordPage = () => {
 						className='w-full py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-lg shadow-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200'
 						type='submit'
 						disabled={isLoading}
-                        onClick={handleSubmit}
 					>
 						{isLoading ? "Resetting..." : "Set New Password"}
 					</motion.button>
+            </form>
             </div>
 
         </motion.div>

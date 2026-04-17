@@ -111,7 +111,6 @@ export const verifyEmail = async (req, res) => {
         } });
 
     } catch (error) {
-        console.log("Error in Verification", error);
         return res.status(500).json({ success: "false", message: error.message });
     }
 
@@ -154,7 +153,6 @@ export const login = async (req, res) => {
         }});
 
     } catch (error) {
-        console.log("Error in Login", error);
         return res.status(500).json({ success: "false", message: error.message });
     }
 }
@@ -196,7 +194,6 @@ export const forgotPassword = async (req, res) => {
 
         return res.status(200).json({ success: "true", message: "Password reset link sent successfully" });
     } catch (error) {
-        console.log("Error in Forgot Password", error);
         return res.status(500).json({ success: "false", message: error.message });
     }
 }
@@ -206,9 +203,6 @@ export const resetPassword = async (req, res) => {
     try {
         
         const { token } = req.params;
-
-        console.log("Token", token);
-
         const { password } = req.body;
 
         const passwordError = validatePassword(password);
@@ -218,8 +212,6 @@ export const resetPassword = async (req, res) => {
             resetPasswordToken: token,
             resetPasswordExpiresAt: { $gt: Date.now() }
         });
-
-        console.log("User", user);
 
         if (!user) {
             return res.status(400).json({ success: "false", message: "Invalid or expired reset token" });
@@ -239,15 +231,12 @@ export const resetPassword = async (req, res) => {
         return res.status(200).json({ success: "true", message: "Password reset successfully" });
 
     } catch (error) {
-        console.log("Error in Reset Password", error);
         return res.status(500).json({ success: "false", message: error.message });
     }
 
 }
 
 export const checkAuth = async (req, res) => {
-
-    console.log("Check Auth", req.userId);
 
     try {
         
@@ -262,7 +251,6 @@ export const checkAuth = async (req, res) => {
             password: undefined
         }});
     } catch (error) {
-        console.log("Error in Check Auth", error);
         return res.status(500).json({ success: "false", message: error.message });
     }
 }

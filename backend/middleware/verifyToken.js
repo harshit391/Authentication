@@ -4,10 +4,6 @@ export const verifyToken = (req, res, next) => {
 
     const token = req.headers.token || req.cookies.token;
 
-    console.log("Cookies", req.cookies);
-
-    console.log("Token", token);
-
     if (!token) {
         return res.status(401).json({ success: "false", message: "Unauthorized" });
     }
@@ -15,8 +11,6 @@ export const verifyToken = (req, res, next) => {
     try {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        console.log("Decoded", decoded);
 
         if (!decoded) {
 
@@ -27,7 +21,6 @@ export const verifyToken = (req, res, next) => {
         next();
     } catch (error) {
         
-        console.log("Error in Verify Token", error);
         return res.status(500).json({ success: "false", message: error.message });
     }
 }

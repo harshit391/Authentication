@@ -23,7 +23,7 @@ const generalLimiter = rateLimit({
 app.use(generalLimiter);
 app.use(cors({origin: process.env.MAIN_API, credentials: true}));
 app.use(cookieParser());
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 
 // CSRF protection: enforce JSON content-type on mutation requests
 app.use("/api", (req, res, next) => {

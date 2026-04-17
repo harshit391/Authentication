@@ -110,8 +110,6 @@ export const useAuthStore = create((set) => ({
     },
 
     resetPassword : async (token, password) => {
-        console.log("Token at Reset Password", token);
-
         set({isLoading: true, error: null});
 
         try {
