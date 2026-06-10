@@ -7,7 +7,7 @@ import EmailVerificationPage from './pages/EmailVerificationPage'
 import Home from './pages/Home'
 import LoadingSpinner from './components/LoadingSpinner'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
-import { useAuthStore } from '../store/authStore'
+import { useAuthStore } from './store/authStore'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 
 

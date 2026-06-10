@@ -12,7 +12,7 @@ const authLimiter = rateLimit({
     max: 10,
     standardHeaders: true,
     legacyHeaders: false,
-    message: { success: "false", message: "Too many authentication attempts, please try again later" },
+    message: { success: false, message: "Too many authentication attempts, please try again later" },
 });
 
 // Strict limiter for password reset: 5 attempts per 15 minutes
@@ -21,7 +21,7 @@ const passwordResetLimiter = rateLimit({
     max: 5,
     standardHeaders: true,
     legacyHeaders: false,
-    message: { success: "false", message: "Too many password reset requests, please try again later" },
+    message: { success: false, message: "Too many password reset requests, please try again later" },
 });
 
 router.get('/check-auth', verifyToken, checkAuth);

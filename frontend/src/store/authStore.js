@@ -17,7 +17,7 @@ export const useAuthStore = create((set) => ({
         set({isLoading: true, error: null});
 
         try {
-            
+
             const response = await axios.post(`${API_URL}/signup`, {email, password, name});
 
             Cookies.set("token", response.data.user.token);
@@ -25,7 +25,7 @@ export const useAuthStore = create((set) => ({
             set({user: response.data.user, isAuthenticated: true, isLoading: false, isVerified: response.data.user.isVerified});
 
         } catch (error) {
-            
+
             set({error : error.response.data.message || "Error Sigin up", isLoading: false});
             throw error;
         }
@@ -35,7 +35,7 @@ export const useAuthStore = create((set) => ({
         set({isLoading: true, error: null});
 
         try {
-            
+
             const response = await axios.post(`${API_URL}/login`, {email, password});
             set({
                 isAuthenticated: true,
@@ -121,4 +121,3 @@ export const useAuthStore = create((set) => ({
         }
     }
 }))
-

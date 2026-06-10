@@ -1,13 +1,11 @@
+import './config/env.js';
 import express from 'express';
-import dotenv from 'dotenv';
 import { connectDB } from './db/connectDB.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 
 import authRoutes from './routes/auth.route.js';
-
-dotenv.config();
 const app = express();
 const PORT = 5000;
 
@@ -17,7 +15,7 @@ const generalLimiter = rateLimit({
     max: 100,
     standardHeaders: true,
     legacyHeaders: false,
-    message: { success: "false", message: "Too many requests, please try again later" },
+    message: { success: false, message: "Too many requests, please try again later" },
 });
 
 app.use(generalLimiter);
@@ -30,7 +28,7 @@ app.use("/api", (req, res, next) => {
     if (req.method !== "GET" && req.method !== "HEAD" && req.method !== "OPTIONS") {
         const contentType = req.headers["content-type"];
         if (!contentType || !contentType.includes("application/json")) {
-            return res.status(415).json({ success: "false", message: "Content-Type must be application/json" });
+            return res.status(415).json({ success: false, message: "Content-Type must be application/json" });
         }
     }
     next();
